@@ -32,6 +32,10 @@ env:
   - SPRING_BOOT_PROFILE=spring-boot-1
   # use spring-boot-2 profile
   - SPRING_BOOT_PROFILE=spring-boot-2
-script: ./scripts/test.sh
+script: 
+    - if [[ "${TRAVIS_CPU_ARCH}" == "arm64" ]]; then
+            sudo apt-get install -y maven openjdk-8-jdk;
+      fi 
+    - ./scripts/test.sh
 after_success:
 - if [ "$TRAVIS_EVENT_TYPE" == "cron" ] && [ "$SPRING_BOOT_PROFILE" == "spring-boot-1" ]; then bash -x scripts/deploy.sh ; fi
